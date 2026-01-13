@@ -3,10 +3,19 @@
 @tailwind utilities;
 
 @layer base {
+  html, body {
+    height: 100%;
+    overflow: hidden;
+  }
+  
   body {
     min-height: 100vh;
-    background: #000000;
-    /* background: #fff; */
+    background: #ffffff;
+  }
+  
+  #root {
+    height: 100%;
+    overflow: hidden;
   }
 }
 

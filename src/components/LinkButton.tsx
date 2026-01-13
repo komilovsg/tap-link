@@ -6,6 +6,7 @@ import { FaviconIcon } from './FaviconIcon';
 interface LinkButtonProps {
   link: Link;
   index: number;
+  theme?: 'light' | 'dark';
 }
 
 const getIcon = (iconType: Link['iconType']) => {
@@ -34,10 +35,12 @@ const getIconGradient = (iconType: Link['iconType']) => {
   }
 };
 
-export const LinkButton = ({ link }: LinkButtonProps) => {
+export const LinkButton = ({ link, theme = 'light' }: LinkButtonProps) => {
   const handleClick = () => {
     trackClick(link.name);
   };
+
+  const isDark = theme === 'dark';
 
   return (
     <a
@@ -47,26 +50,29 @@ export const LinkButton = ({ link }: LinkButtonProps) => {
       onClick={handleClick}
       className="group relative w-full block"
     >
-      <div className="
+      <div className={`
         relative
-        bg-gray-900/60 backdrop-blur-md
-        border border-white/10
+        backdrop-blur-md
+        border
         rounded-2xl
         p-4
-        shadow-lg
-        hover:shadow-2xl
+        shadow-md
+        hover:shadow-xl
         transition-all duration-300
         hover:scale-[1.02]
-        hover:bg-gray-900/80
-        hover:border-white/20
         cursor-pointer
         overflow-hidden
-      ">
+        ${
+          isDark
+            ? 'bg-gray-900/60 border-white/10 hover:bg-gray-900/80 hover:border-white/20'
+            : 'bg-white/90 border-gray-200 hover:bg-white hover:border-gray-300'
+        }
+      `}>
         {/* Декоративный градиент при наведении */}
         <div className="
           absolute inset-0
           bg-gradient-to-r from-[#016fee]/0 via-[#a278f8]/0 to-[#41c97c]/0
-          group-hover:from-[#016fee]/15 group-hover:via-[#a278f8]/15 group-hover:to-[#41c97c]/15
+          group-hover:from-[#016fee]/10 group-hover:via-[#a278f8]/10 group-hover:to-[#41c97c]/10
           transition-all duration-500
         " />
         
@@ -76,10 +82,10 @@ export const LinkButton = ({ link }: LinkButtonProps) => {
           <div className={`
             flex-shrink-0
             w-12 h-12
-            rounded-xl
+            rounded-full
             ${getIconGradient(link.iconType)}
             flex items-center justify-center
-            shadow-lg
+            shadow-md
             group-hover:scale-110
             transition-transform duration-300
           `}>
@@ -88,25 +94,28 @@ export const LinkButton = ({ link }: LinkButtonProps) => {
           
           {/* Текст */}
           <div className="flex-1 min-w-0">
-            <h3 className="
+            <h3 className={`
               text-base font-semibold
-              text-white
-              group-hover:text-gray-100
               transition-colors duration-300
               truncate
-            ">
+              ${
+                isDark
+                  ? 'text-white group-hover:text-gray-100'
+                  : 'text-gray-900 group-hover:text-gray-800'
+              }
+            `}>
               {link.name}
             </h3>
           </div>
           
           {/* Стрелка */}
-          <div className="
+          <div className={`
             flex-shrink-0
-            text-gray-400
             group-hover:text-[#016fee]
             group-hover:translate-x-1
             transition-all duration-300
-          ">
+            ${isDark ? 'text-gray-400' : 'text-gray-400'}
+          `}>
             <svg
               className="w-5 h-5"
               fill="none"
